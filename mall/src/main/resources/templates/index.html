@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:include="common::header">
+</head>
+<body class="fixed-sidebar full-height-layout gray-bg"
+      style="overflow: hidden">
+<div id="wrapper">
+    <div th:replace="common::leftBar"></div>
+    <div id="page-wrapper" class="gray-bg dashbard-1">
+        <div th:replace="common::rightTop1Bar"></div>
+        <div th:replace="common::rightTop2Bar"></div>
+        <div class="row J_mainContent" id="content-main">
+            <!--右侧的内容-->
+        </div>
+        <div th:replace="common::rightFooter"></div>
+    </div>
+</div>
+<div th:include="common::footer"></div>
+<script type="text/javascript">
+    // 基于准备好的dom，初始化echarts实例
+    var myChart = echarts.init(document.getElementById('content-main'));
+    $(document).ready(function(){
+        $.ajax({
+            type:"GET",
+            url: "/report",
+            dataType:"json",
+            success:function (data) {
+                myChart.setOption({
+                    title: {
+                        text: '订单统计'
+                    },
+                    tooltip: {
+                        trigger: 'axis'
+                    },
+                    legend: {
+                        data:['订单数','销售额']
+                    },
+                    toolbox: {
+                        show: true,
+                        feature: {
+                            magicType: {show: true, type: ['stack', 'tiled']},
+                            saveAsImage: {show: true}
+                        }
+                    },
+                    xAxis: {             //直角坐标系 grid 中的 x 轴
+                        type: 'category',
+                        boundaryGap: false,
+                        data: data.time  //订单时间
+                    },
+                    yAxis: [{
+                        type : 'value',
+                        scale:true  /*按比例显示*/
+                    },{
+                        type : 'value',
+                        scale:true  /*按比例显示*/
+                    }],
+                    series: [{
+                        name: '订单数',
+                        smooth:true,
+                        type: 'line',
+                        yAxisIndex: 0,/*y轴*/
+                        data: data.count,
+                        itemStyle:{
+                            normal:{
+                                color:'#1a7bb9'
+                                //areaStyle: {color:'#1a7bb9'}
+                            }
+                        }
+                    },{
+                        name: '营业额',
+                        smooth:true,
+                        type: 'line',
+                        yAxisIndex: 1,/*y轴*/
+                        data: data.money,
+                        itemStyle:{
+                            normal:{
+                                color:'#008855'
+                                //areaStyle: {color:'#008855'}
+                            }
+                        }
+                    }]
+                });
+            }
+        })
+    });
+</script>
+</body>
+</html>

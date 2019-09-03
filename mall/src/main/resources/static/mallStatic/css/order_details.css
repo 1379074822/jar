@@ -1,0 +1,23 @@
+@charset "utf-8";
+
+
+.process{background: #FFFFFF;border-radius: 5px 5px 0 0;color: #353535;;font-size: 18px;}
+.process li>div{right: -22px;color:#353535 ;}
+.process ol{margin: 20px 0;}
+.process li{width: 20%;}
+.process li i{background: #FFFFFF;}
+.process>h2{color: #232323;font-size: 20px;padding:50px 0 10px 85px;}
+.process>p{color: #6e6e6e;font-size: 18px;margin-left: 85px;}
+.process>p span{padding-right: 45px;}
+.process>p span b{color: #f95252;}
+.process>h3{color: #353535;font-size: 18px;padding-left: 45px;}
+.process dl{padding:50px 85px;}
+.process dt{color: #353535;;font-size: 18px;}
+.process dd{color: #5a5a5a;;font-size: 16px;}
+.process dd span{display: inline-block;width: 100px;}
+
+
+.total{padding: 40px 70px 30px;height: 140px;border-bottom: 1px #a3a3a3 solid;}
+.total ul{float: right;color: #333333;font-size: 18px;}
+
+.total li span{display: inline-block;width: 100px;text-align: right;}

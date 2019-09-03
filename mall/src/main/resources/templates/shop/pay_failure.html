@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="utf-8" />
+	<title>支付失败</title>
+	<link rel="stylesheet" type="text/css" th:href="@{/mallStatic/css/common.css}"/>
+	<link rel="stylesheet" type="text/css" th:href="@{/mallStatic/css/style.css}"/>
+	<link rel="stylesheet" type="text/css" th:href="@{/mallStatic/css/pay_success.css}"/>
+	<!--引入重置样式-->
+	<link rel="stylesheet" th:href="@{/css/reset.css}">
+	<!--引入公用样式-->
+	<link rel="stylesheet" th:href="@{/css/common.css}">
+	<!--引入首页样式-->
+	<link rel="stylesheet" th:href="@{/css/01-index.css}">
+	<script th:src="@{/js/jquery.min.js}"></script>
+	<script th:src="@{/mallStatic/js/jquery.js}" type="text/javascript" charset="utf-8"></script>
+	<script th:src="@{/mallStatic/js/myjs.js}" type="text/javascript" charset="utf-8"></script>
+</head>
+<body>
+<div th:replace="shop/index::header"></div>
+<div th:replace="shop/index::logo_search"></div>
+<div class="navbar">
+	<div th:replace="shop/common::navbar"></div>
+</div>
+<div class="order container">
+	<img th:src="@{/mallStatic/img/pay_failure.jpg}"/>
+	<div class="order_con">
+		<h1>付款失败！</h1>
+		<p>请重新返回页面支付。</p>
+		<h3>应付金额：<b th:text="${'￥'+order.paymentMoney}"></b></h3>
+		<a th:href="@{/mall/orderDetails(id=${order.id})}">订单详情<i class="caret"></i></a>
+	</div>
+	<div class="order_btn">
+		<a th:href="@{/mall/myOrder(status=0)}">查看订单</a>
+	</div>
+</div>
+<div th:replace="shop/index::helpfooter"></div>
+<div th:replace="shop/index::copyfooter"></div>
+</body>
+</html>

@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.mall.mapper.GoodsMapper" >
+
+  <insert id="insert" parameterType="Goods" >
+    insert into t_goods
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="goodsName != null" >
+        goods_name,
+      </if>
+      <if test="goodsCore != null" >
+        goods_core,
+      </if>
+      <if test="goodsDescription != null" >
+        goods_description,
+      </if>
+      <if test="oneCategoryId != null" >
+        one_category_id,
+      </if>
+      <if test="twoCategoryId != null" >
+        two_category_id,
+      </if>
+      <if test="logoPicPath != null" >
+        logo_pic_path,
+      </if>
+      <if test="logoLocPath != null" >
+        logo_loc_path,
+      </if>
+      <if test="cost != null" >
+        cost,
+      </if>
+      <if test="price != null" >
+        price,
+      </if>
+      <if test="state != null" >
+        state,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="modifyTime != null" >
+        modify_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="goodsName != null" >
+        #{goodsName,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsCore != null" >
+        #{goodsCore,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsDescription != null" >
+        #{goodsDescription,jdbcType=VARCHAR},
+      </if>
+      <if test="oneCategoryId != null" >
+        #{oneCategoryId,jdbcType=SMALLINT},
+      </if>
+      <if test="twoCategoryId != null" >
+        #{twoCategoryId,jdbcType=SMALLINT},
+      </if>
+      <if test="logoPicPath != null" >
+        #{logoPicPath,jdbcType=VARCHAR},
+      </if>
+      <if test="logoLocPath != null" >
+        #{logoLocPath,jdbcType=VARCHAR},
+      </if>
+      <if test="cost != null" >
+        #{cost,jdbcType=DECIMAL},
+      </if>
+      <if test="price != null" >
+        #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="state != null" >
+        #{state,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifyTime != null" >
+        #{modifyTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+
+  <update id="update" parameterType="Goods" >
+    update t_goods
+    <set>
+      <if test="goodsName != null" >goods_name = #{goodsName},</if>
+      <if test="goodsCore != null" >goods_core = #{goodsCore},</if>
+      <if test="goodsDescription != null" >goods_description = #{goodsDescription},</if>
+      <if test="oneCategoryId != null" >one_category_id = #{oneCategoryId},</if>
+      <if test="twoCategoryId != null" >two_category_id = #{twoCategoryId},</if>
+      <if test="logoPicPath != null" >logo_pic_path = #{logoPicPath},</if>
+      <if test="logoLocPath != null" >logo_loc_path = #{logoLocPath},</if>
+      <if test="cost != null" >cost = #{cost},</if>
+      <if test="price != null" >price = #{price},</if>
+      <if test="state != null" >state = #{state},</if>
+      <if test="createTime != null" >create_time = #{createTime},</if>
+      <if test="modifyTime != null" >modify_time = #{modifyTime},</if>
+    </set>
+    where id = #{id}
+  </update>
+
+  <select id="getGoodsListByParam" resultType="Goods">
+    select g.id,g.goods_name,g.goods_core,g.one_category_id,g.two_category_id,g.cost,g.price,
+            g.create_time,g.modify_time,g.logo_pic_path,g.logo_loc_path,g.goods_description,g.state,
+           (select value_name from t_data_dictionary d where g.state = d.value_id and d.type_code = 'GOODS_STATE')
+           as stateName,
+           (select category_name from t_goods_category c where c.id = g.one_category_id)
+           as oneCategoryName,
+           (select category_name from t_goods_category c where c.id = g.two_category_id)
+           as twoCategoryName,
+           (select sale from t_goods_stock s where s.goods_id = g.id) as sale,
+           (select stock from t_goods_stock s where s.goods_id = g.id) as stock
+      from t_goods g
+      <trim prefix="where" prefixOverrides="and | or">
+        <if test="goodsName != null and goodsName != ''">
+          and g.goods_name like CONCAT ('%',#{goodsName},'%')
+        </if>
+        <if test="goodsCore != null and goodsCore != ''">
+          and g.goods_core like CONCAT ('%',#{goodsCore},'%')
+        </if>
+        <if test="state != null">
+          and g.state = #{state}
+        </if>
+        <if test="oneCategoryId != null">
+          and g.one_category_id = #{oneCategoryId}
+        </if>
+        <if test="twoCategoryId != null">
+          and g.two_category_id = #{twoCategoryId}
+        </if>
+      </trim>
+     order by modify_time DESC limit #{from},#{pageSize}
+  </select>
+
+  <select id="getGoodsCountByParam" resultType="int">
+    select COUNT(*) as count from t_goods g
+    <trim prefix="where" prefixOverrides="and | or">
+      <if test="goodsName != null and goodsName != ''">
+        and g.goods_name like CONCAT ('%',#{goodsName},'%')
+      </if>
+      <if test="goodsCore != null and goodsCore != ''">
+        and g.goods_core like CONCAT ('%',#{goodsCore},'%')
+      </if>
+      <if test="state != null">
+        and g.state = #{state}
+      </if>
+      <if test="oneCategoryId != null">
+        and g.one_category_id = #{oneCategoryId}
+      </if>
+      <if test="twoCategoryId != null">
+        and g.two_category_id = #{twoCategoryId}
+      </if>
+    </trim>
+  </select>
+
+  <select id="checkGoods" resultType="Goods">
+    select * from t_goods where goods_name = #{goodsName}
+  </select>
+
+  <select id="getGoodsById" resultType="Goods">
+    select *,(select value_name from t_data_dictionary d where g.state = d.value_id and d.type_code = 'GOODS_STATE')
+           as stateName,
+           (select category_name from t_goods_category c where c.id = g.one_category_id)
+           as oneCategoryName,
+           (select category_name from t_goods_category c where c.id = g.two_category_id)
+           as twoCategoryName,
+           (select stock from t_goods_stock s where s.goods_id = g.id) as stock,
+           (select sale from t_goods_stock s where s.goods_id = g.id) as sale
+      from t_goods g
+    <trim prefix="where" prefixOverrides="and | or">
+      <if test="id != null">
+        and g.id = #{id}
+      </if>
+    </trim>
+  </select>
+
+  <delete id="deleteGoodsById" parameterType="Integer">
+    delete from t_goods where id = #{id}
+  </delete>
+
+  <update id="deleteGoodsLogo" parameterType="Integer">
+    update t_goods set logo_pic_path=null,logo_loc_path = null where id = #{id}
+  </update>
+
+  <select id="getAllGoodsByLimit" resultType="Goods">
+    select * from t_goods where state = 1 limit 8
+  </select>
+  
+  <select id="getHotGoods" resultType="Goods">
+    select g.logo_pic_path,g.goods_name,g.goods_core,g.price from t_goods g,t_goods_stock s where
+       g.state = 1 and g.id = s.goods_id order by s.sale DESC limit 8
+  </select>
+
+  <select id="getNewGoods" resultType="Goods">
+    select * from t_goods g where
+       g.state = 1 order by create_time DESC limit 8
+  </select>
+
+  <select id="checkByCategory" resultType="Goods">
+    select * from t_goods where two_category_id = #{id} limit 1
+  </select>
+
+  <select id="getGoodsList" resultType="Goods">
+    select * from t_goods where state = 1
+  </select>
+</mapper>

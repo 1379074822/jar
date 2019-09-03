@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>用户中心-修改密码</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/mallStatic/css/change_pwd.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/mallStatic/css/common.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/mallStatic/css/style.css}"/>
+    <link rel="stylesheet" th:href="@{/css/reset.css}">
+    <link rel="stylesheet" th:href="@{/css/common.css}">
+    <link rel="stylesheet" th:href="@{/css/01-index.css}">
+    <script th:src="@{/js/jquery.min.js}"></script>
+    <script th:src="@{/js/plugins/layer/layer.min.js}"></script>
+    <script th:src="@{/mallStatic/js/pwd.js}" type="text/javascript" charset="utf-8"></script>
+    <script th:src="@{/mallStatic/js/jquery.js}" type="text/javascript" charset="utf-8"></script>
+    <script th:src="@{/mallStatic/js/myjs.js}" type="text/javascript" charset="utf-8"></script>
+</head>
+<body>
+<div th:replace="shop/index::header"></div>
+<div th:replace="shop/index::logo_search"></div>
+<div class="navbar">
+    <div th:replace="shop/common::navbar"></div>
+</div>
+<div class="middle container">
+    <div th:replace="shop/user::user_nav"></div>
+    <div class="user_menu">
+        <ol>
+            <li><a th:href="@{/mall/myOrder(status=0)}">我的订单</a></li>
+            <li><a th:href="@{/mall/userCenter}">个人资料</a></li>
+            <li class="on"><a th:href="@{/mall/modifyPwd}">修改密码</a></li>
+            <li>
+                <form th:action="@{/mall/address}">
+                    <input type="hidden" name="pageIndex" value="1">
+                    <button type="submit">管理地址</button>
+                </form>
+            </li>
+            <li>
+                <form th:action="@{/user/viewPoint}">
+                    <input type="hidden" name="pageIndex" value="1">
+                    <button type="submit">积分明细</button>
+                </form>
+            </li>
+        </ol>
+    </div>
+    <div class="change_pwd">
+        <form onsubmit="return false">
+            <div>
+                <label>原密码：</label>
+                <input type="password" name="oldPwd" id="oldPwd"/><i style="color: #ff2222"></i></div>
+            <div>
+                <label>新密码：</label>
+                <input type="password" name="newPwd" id="newPwd"/><i style="color: #ff2222"></i>
+            </div>
+            <div>
+                <label>确认密码：</label>
+                <input type="password" name="surePwd" id="surePwd"><i style="color: #ff2222"></i>
+            </div>
+            <button type="button" id="sure">确认并保存</button>
+        </form>
+    </div>
+
+</div>
+</body>
+</html>

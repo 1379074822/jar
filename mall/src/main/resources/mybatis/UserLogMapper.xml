@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.mall.mapper.UserLogMapper" >
+
+  <select id="getLogList" resultType="UserLog">
+    select * from t_user_log u
+    <trim prefix="where" prefixOverrides="and | or">
+      <if test="account!= null and account != ''">
+        and u.account like CONCAT ('%',#{account},'%')
+      </if>
+      <if test="createTime != null and createTime !='' ">
+        and DATE_FORMAT(u.create_time,'%Y-%m-%d') = #{createTime}
+      </if>
+    </trim>
+    order by create_time DESC limit #{from},#{pageSize}
+  </select>
+
+  <select id="getLogCounts" resultType="int">
+    select count(*) as count from t_user_log u
+    <trim prefix="where" prefixOverrides="and | or">
+      <if test="account!= null and account != ''">
+        and u.account like CONCAT ('%',#{account},'%')
+      </if>
+      <if test="createTime != null and createTime !='' ">
+        and DATE_FORMAT(u.create_time,'%Y-%m-%d') = #{createTime}
+      </if>
+    </trim>
+  </select>
+
+  <delete id="delete" parameterType="Integer" >
+    delete from t_user_log where id = #{id}
+  </delete>
+
+  <insert id="insert" parameterType="UserLog" >
+    insert into t_user_log
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >id,</if>
+      <if test="account != null" >account,</if>
+      <if test="content != null" >content,</if>
+      <if test="createTime != null" >create_time,</if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >#{id},</if>
+      <if test="account != null" >#{account},</if>
+      <if test="content != null" >#{content}, </if>
+      <if test="createTime != null" >#{createTime},</if>
+    </trim>
+  </insert>
+
+</mapper>

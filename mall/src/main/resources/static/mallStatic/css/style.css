@@ -1,0 +1,40 @@
+@charset "utf-8";
+/*下拉三角形*/
+.caret{height: 0;width: 0;border-left: 7px solid #FFFFFF;border-right: 7px solid #FFFFFF;border-top: 8px solid #666666;}
+/*上一页下一页列表*/
+.lists{padding: 50px 0;}
+.lists li{margin-left: 20px;font-size: 24px;}
+.lists ol{height: 50px;width: 720px;margin: 0 auto;}
+.lists ol li{float: left;width: 100px;height: 45px;font-size: 24px;border: 1px solid #009247;text-align: center;margin: 0 18px;border-radius: 5px;}
+.lists ol li a{display: block;line-height: 45px;}
+.lists ol li a:hover{color: #FFFFFF;;background: #009247;}
+.lists ol li.on a{color: #FFFFFF;;background: #009247;}
+.lists ol li:nth-last-of-type(1) {width: 156px;}
+.lists ol li:nth-of-type(1) {width: 156px;}
+
+/*订单进度条*/
+.process ol{height: 60px;margin: 50px 0;color: #666666;}
+.process li{float: left;width: 25%;position: relative;}
+.process li p{margin-top: 15px;border-top: #999999 2px solid;}
+.process li>div{float: right;position: absolute;right: -10px ;top: 0;text-align: center;z-index: 10;}
+.process li i{margin: 0 auto;background: #f1f1f1;display: block;height: 28px;width: 28px;border: #999999 solid 2px;border-radius: 50%; ;}
+.process li:nth-of-type(1) *{border-color: #009247;}
+
+/*用户中心公共部分*/
+.user_nav{text-align: center;border-radius: 5px;color: #393939;font-size: 18px;height: 50px;margin: 1px 0 30px 0;background: #FFFFFF;}
+.user_menu{background: #FFFFFF;border-radius: 5px;}
+.user_menu ol{height: 70px;padding-left: 50px;margin-bottom: 38px;border-radius: 5px;} 
+.user_menu ol li{height: 70px;width: 88px;line-height: 70px;float: left;margin-right: 55px;font-size: 22px;}
+.user_menu ol li.addressOn form button{color: #009247}
+.user_menu ol li.pointOn form button{color: #009247}
+.user_menu ol li.on{border-bottom: 1px #009247 solid;}
+
+.user_menu ol li:hover{border-bottom: 1px #009247 solid;}
+/*.user_menu ol li:active{border-bottom: 1px #009247 solid;}*/
+.user_menu ol li form{height: 70px;width: 88px;}
+.user_menu ol li .addressOn{color: #009247}
+.user_menu ol li form button{display: block;color: #222222;height: 70px;width: 88px;border: none;}
+.user_menu ol li a{display: block;color: #222222;}
+.user_menu ol li.on button{display: block;color: #222222;}
+.user_menu ol li.on a{color:#009247 ;}
+.user_menu ol li:hover a{color:#009247 ;}

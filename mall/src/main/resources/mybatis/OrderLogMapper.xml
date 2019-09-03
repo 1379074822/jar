@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.mall.mapper.OrderLogMapper" >
+
+  <select id="getLogList" resultType="OrderLog">
+    select * from t_order_log o
+      <trim prefix="where" prefixOverrides="and | or">
+        <if test="orderCode != null and orderCode != '' ">
+          and o.order_code = #{orderCode}
+        </if>
+        <if test="createTime != null and createTime !='' ">
+        and DATE_FORMAT(o.create_time,'%Y-%m-%d') = #{createTime}
+      </if>
+      </trim>
+      order by create_time DESC limit #{from},#{pageSize}
+  </select>
+
+  <select id="getLogCounts" resultType="int">
+    select count(*) as count from t_order_log o
+      <trim prefix="where" prefixOverrides="and | or">
+        <if test="orderCode != null and orderCode != '' ">
+          and o.order_code = #{orderCode}
+        </if>
+        <if test="createTime != null and createTime !='' ">
+        and DATE_FORMAT(o.create_time,'%Y-%m-%d') = #{createTime}
+      </if>
+    </trim>
+  </select>
+
+  <insert id="insert" parameterType="OrderLog" >
+    insert into t_order_log
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >id,</if>
+      <if test="orderCode != null" >order_code,</if>
+      <if test="content != null" >content,</if>
+      <if test="createTime != null" >create_time,</if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >#{id},</if>
+      <if test="orderCode != null" >#{orderCode},</if>
+      <if test="content != null" >#{content},</if>
+      <if test="createTime != null" >#{createTime},</if>
+    </trim>
+  </insert>
+
+  <delete id="deleteLog" parameterType="Integer">
+    delete from t_order_log where id = #{id}
+  </delete>
+
+</mapper>

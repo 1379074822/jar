@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.mall.mapper.GoodsStockMapper" >
+
+  <select id="selectById" resultType="GoodsStock" parameterType="Long" >
+    select * from t_goods_stock where id = #{id}
+  </select>
+
+  <select id="getGoodsSale" resultType="int" parameterType="Integer">
+    select sale from t_goods_stock where goods_id = #{id}
+  </select>
+
+  <select id="getGoodsStock" resultType="int" parameterType="Integer">
+    select stock from t_goods_stock where goods_id = #{id}
+  </select>
+
+  <delete id="deleteStock" parameterType="Integer">
+    delete from t_goods_stock where goods_id = #{goodsId}
+  </delete>
+
+  <insert id="insert" parameterType="GoodsStock" >
+    insert into t_goods_stock
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="goodsId != null" >
+        goods_id,
+      </if>
+      <if test="sale != null" >
+        sale,
+      </if>
+      <if test="stock != null" >
+        stock,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="modifyTime != null" >
+        modify_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id},
+      </if>
+      <if test="goodsId != null" >
+        #{goodsId},
+      </if>
+      <if test="sale != null" >
+        #{sale},
+      </if>
+      <if test="stock != null" >
+        #{stock},
+      </if>
+      <if test="createTime != null" >
+        #{createTime},
+      </if>
+      <if test="modifyTime != null" >
+        #{modifyTime},
+      </if>
+    </trim>
+  </insert>
+
+  <update id="update" parameterType="GoodsStock" >
+    update t_goods_stock
+    <set >
+      <if test="goodsId != null" >
+        goods_id = #{goodsId},
+      </if>
+      <if test="sale != null" >
+        sale = #{sale},
+      </if>
+      <if test="stock != null" >
+        stock = #{stock},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifyTime != null" >
+        modify_time = #{modifyTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id}
+  </update>
+  
+  <update id="updateByOrder" parameterType="Integer">
+    update t_goods_stock set stock=stock-#{count},sale=sale+#{count}
+      where goods_id = #{goodsId} and stock >= #{count}
+  </update>
+
+  <update id="stockRollback" parameterType="Integer">
+    update t_goods_stock set stock = stock + #{count},sale=sale-#{count}
+      where goods_id = #{goodsId}
+  </update>
+
+  <update id="updateStockByAdmin" parameterType="Integer">
+    update t_goods_stock set stock = #{stock} where goods_id = #{goodsId}
+  </update>
+
+</mapper>

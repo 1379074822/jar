@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:include="common::header">
+    <meta charset="UTF-8">
+    <title>Title</title>
+<body class="fixed-sidebar full-height-layout gray-bg"
+      style="overflow: hidden">
+<div id="wrapper">
+    <div th:replace="common::leftBar"></div>
+    <div id="page-wrapper" class="gray-bg dashbard-1">
+        <div th:replace="common::rightTop1Bar"></div>
+        <div th:replace="common::rightTop2Bar"></div>
+        <div class="row J_mainContent" id="content-main" style="overflow:auto">
+            <!--右侧的内容-->
+            <div class="clearfix"></div>
+            <div class="row">
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <div class="x_panel">
+                        <div class="x_title">
+                            <h2>查看会员信息 <i class="fa fa-user"></i><small th:text="${session.adminSession.account}"></small></h2>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="x_title">
+                            <h2>APP基础信息</h2>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="x_content1">
+                            <form class="form-horizontal form-label-left" >
+                                <input type="hidden" name="id" th:value="${user.id}">
+                                <div class="item form-group">
+                                    <label class="control-label col-md-3 col-sm-3 col-xs-12" th:for="name">会员账户名 <span class="required">*</span>
+                                    </label>
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <input class="form-control col-md-7 col-xs-12" th:value="${user.account}" type="text" readonly="readonly">
+                                    </div>
+                                </div>
+                                <div class="item form-group">
+                                    <label class="control-label col-md-3 col-sm-3 col-xs-12" th:for="name">会员昵称 <span class="required">*</span>
+                                    </label>
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <input type="text" class="form-control col-md-7 col-xs-12" th:value="${user.nickName}" readonly="readonly">
+                                    </div>
+                                </div>
+
+                                <div class="item form-group">
+                                    <label class="control-label col-md-3 col-sm-3 col-xs-12" th:for="name">电话 <span class="required">*</span>
+                                    </label>
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <input class="form-control col-md-7 col-xs-12" th:value="${user.phone}" type="text" readonly="readonly">
+                                    </div>
+                                </div>
+
+                                <div class="item form-group">
+                                    <label class="control-label col-md-3 col-sm-3 col-xs-12" th:for="name">邮箱 <span class="required">*</span>
+                                    </label>
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <input class="form-control col-md-7 col-xs-12" readonly="readonly" th:value="${user.email}" type="text">
+                                    </div>
+                                </div>
+
+                                <div class="item form-group">
+                                    <label class="control-label col-md-3 col-sm-3 col-xs-12" th:for="number">积分 <span class="required">*</span>
+                                    </label>
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <input type="text" th:value="${user.point}" class="form-control col-md-7 col-xs-12" readonly="readonly">
+                                    </div>
+                                </div>
+
+                                <div class="item form-group">
+                                    <label class="control-label col-md-3 col-sm-3 col-xs-12" th:for="textarea">注册时间 <span class="required">*</span>
+                                    </label>
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <input type="text" th:value="*{#dates.format(user.createTime,'yyyy-MM-dd')}" class="form-control col-md-7 col-xs-12" readonly="readonly">
+                                    </div>
+                                </div>
+
+                            </form>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-6 col-md-offset-3">
+                                <button type="button" class="btn btn-primary" id="back">返回</button>
+                            </div>
+                        </div>
+                        <div class="clearfix"></div>
+                        <br/><br/>
+                    </div>
+                </div>
+        </div>
+        <div th:replace="common::rightFooter"></div>
+    </div>
+</div>
+</div>
+<div th:include="common::footer"></div>
+<script th:src="@{/mallStatic/js/system/userlist.js}"></script>
+</body>
+</html>

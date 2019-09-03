@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="utf-8" />
+	<title>用户登录</title>
+	<link rel="stylesheet" type="text/css" th:href="@{/mallStatic/css/common.css}"/>
+	<link rel="stylesheet" type="text/css" th:href="@{/mallStatic/css/style.css}"/>
+	<link rel="stylesheet" type="text/css" th:href="@{/mallStatic/css/login.css}"/>
+	<link rel="stylesheet" th:href="@{/css/reset.css}">
+	<link rel="stylesheet" th:href="@{/css/common.css}">
+	<link rel="stylesheet" th:href="@{/css/01-index.css}">
+    <script th:src="@{/mallStatic/js/jquery.js}" type="text/javascript" charset="utf-8"></script>
+	<script th:src="@{/js/plugins/layer/layer.min.js}"></script>
+	<script th:src="@{/mallStatic/js/login.js}" type="text/javascript" charset="utf-8"></script>
+	<script th:src="@{/mallStatic/js/myjs.js}" type="text/javascript" charset="utf-8"></script>
+</head>
+<body>
+<div th:replace="shop/index::header"></div>
+<div th:replace="shop/index::logo_search"></div>
+<div class="navbar">
+	<div th:replace="shop/common::navbar"></div>
+</div>
+	<div class="login container">
+		<div class="login_img">
+			<img th:src="@{/mallStatic/img/login01.jpg}"/>
+		</div>
+		<div class="login_info">
+			<h2>欢迎登录带艺术家!</h2>
+			<form id="loginForm">
+				<label>
+					<img th:src="@{/mallStatic/img/icon_user.jpg}"/>
+					<input type="text" name="account" placeholder="请输入账号" id="account" />
+				</label>
+				<label>
+					<img th:src="@{/mallStatic/img/icon_pwd.jpg}"/>
+					<input type="password" name="password" placeholder="请输入密码" id="pwd" />
+				</label>
+				<!--验证码-->
+				<label>
+					<input type="text" name="verify" id="verify" placeholder="请输入验证码" />
+					<a href="javascript:void(0);" rel="external nofollow" title="点击更换验证码">
+						<img style="margin-top: 12px;"  src="" id="imgVerify" alt="更换验证码" height="36" width="100%" onclick="swichCode(this);">
+					</a>
+				</label>
+				<label>
+					<span id="auto_login"></span>
+					<a href="#">忘记密码?</a>
+				</label><br>
+				<label>
+					<button type="button" id="loginSubmit">登录</button>
+					<a th:href="@{/mall/reg}">免费注册</a>
+				</label>
+			</form>
+			<!--
+			<h3>快速登录</h3>
+			<ol>
+				<li><a href="#"><img th:src="@{/mallStatic/img/icon_qq.png}"/></a></li>
+				<li><a href="#"><img th:src="@{/mallStatic/img/icon_wb.png}"/></a></li>
+				<li><a href="#"><img th:src="@{/mallStatic/img/icon_wx.png}"/></a></li>
+			</ol>-->
+		</div>
+
+	</div>
+	<div th:replace="shop/index::helpfooter"></div>
+	<div th:replace="shop/index::copyfooter"></div>
+</body>
+</html>

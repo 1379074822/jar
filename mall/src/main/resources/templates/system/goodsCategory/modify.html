@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:include="common::header">
+</head>
+<body class="fixed-sidebar full-height-layout gray-bg"
+      style="overflow: hidden">
+<div id="wrapper">
+    <div th:replace="common::leftBar"></div>
+    <div id="page-wrapper" class="gray-bg dashbard-1">
+        <div th:replace="common::rightTop1Bar"></div>
+        <div th:replace="common::rightTop2Bar"></div>
+        <div class="row J_mainContent" style="overflow:auto" id="content-main">
+            <!--右侧内容-->
+            <div class="clearfix"></div>
+            <div class="row">
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <div class="x_panel">
+                        <div class="x_title">
+                            <h2>修改商品分类名称<i class="fa fa-user"></i><small th:text="${session.adminSession.adminName}"></small></h2>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="x_content">
+                            <div class="clearfix"></div>
+                            <form class="form-horizontal form-label-left" th:action="@{/system/goods/categoryModifySave}" method="post">
+                                <div class="item form-group">
+                                    <label class="control-label col-md-3 col-sm-3 col-xs-12" th:for="name">分类名称 <span class="required">*</span></label>
+                                    <input type="hidden" th:value="${goodsCategory.id}" name="id">
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <input id="categoryName" class="form-control col-md-7 col-xs-12" data-validate-length-range="20"
+                                               data-validate-words="1" name="categoryName"  required="required" th:value="${goodsCategory.categoryName}"
+                                               placeholder="请输入商品分类名称" type="text">
+                                    </div>
+                                </div>
+                                <div class="ln_solid"></div>
+                                <div class="form-group">
+                                    <div class="col-md-6 col-md-offset-3">
+                                        <button id="send" type="submit" class="btn btn-success">修改</button>
+                                        <button type="button" class="btn btn-primary" id="back">返回</button>
+                                        <br/><br/>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div th:replace="common::rightFooter"></div>
+    </div>
+</div>
+<div th:include="common::footer"></div>
+<script th:src="@{/mallStatic/js/system/categoryadd.js}"></script>
+</body>
+</html>

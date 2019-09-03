@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.mall.mapper.ShopCarMapper" >
+
+  <delete id="deleteById" parameterType="String">
+    delete from t_shop_car where id in (${id})
+  </delete>
+
+  <select id="getListByIds" parameterType="String" resultType="ShopCar">
+    select id,user_id,goods_id,goods_num,price,create_time,
+        (select goods_name from  t_goods g where g.id = s.goods_id) as goodsName,
+        (select price from t_goods g where g.id = s.goods_id) as soloPrice,
+        (select logo_pic_path from t_goods g where g.id = s.goods_id) as logoPicPath
+         from t_shop_car s where id in (${ids})
+  </select>
+
+  <insert id="insert" parameterType="com.mall.pojo.ShopCar" >
+    insert into t_shop_car
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >id,</if>
+      <if test="goodsId != null" >goods_id,</if>
+      <if test="userId != null" >user_id,</if>
+      <if test="goodsNum != null" >goods_num,</if>
+      <if test="price != null" >price,</if>
+      <if test="createTime != null" >create_time,</if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >#{id},</if>
+      <if test="goodsId != null" >#{goodsId},</if>
+      <if test="userId != null" >#{userId},</if>
+      <if test="goodsNum != null" >#{goodsNum},</if>
+      <if test="price != null" >#{price},</if>
+      <if test="createTime != null" >#{createTime},</if>
+    </trim>
+  </insert>
+
+  <select id="getByGoodsId" resultType="ShopCar" parameterType="Integer">
+    select * from t_shop_car where goods_id = #{goodsId} limit 1
+  </select>
+
+  <select id="getById" resultType="ShopCar">
+    select *,(select goods_name from  t_goods g where g.id = s.goods_id) as goodsName,
+        (select price from t_goods g where g.id = s.goods_id) as soloPrice
+        from t_shop_car s where s.id = #{id}
+  </select>
+
+  <update id="updateByGoodsId">
+    update t_shop_car set goods_num = #{num},price = #{price} where goods_id = #{goodsId}
+  </update>
+
+  <select id="getShopList" parameterType="Integer" resultType="ShopCar">
+    select id,goods_num,price,
+        (select goods_name from  t_goods g where g.id = s.goods_id) as goodsName,
+        (select price from t_goods g where g.id = s.goods_id) as soloPrice,
+        (select logo_pic_path from t_goods g where g.id = s.goods_id) as logoPicPath
+         from t_shop_car s where user_id = #{userId}
+  </select>
+
+  <select id="getTotalPrice" parameterType="Integer" resultType="DECIMAL">
+    select sum(price) from t_shop_car where user_id = #{userId}
+  </select>
+
+  <select id="getTotalCount" parameterType="Integer" resultType="Integer">
+    select sum(goods_num) from t_shop_car where user_id = #{userId}
+  </select>
+
+</mapper>

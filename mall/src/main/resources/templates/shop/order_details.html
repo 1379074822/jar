@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>订单详情</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/mallStatic/css/common.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/mallStatic/css/style.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/mallStatic/css/order.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/mallStatic/css/order_details.css}"/>
+    <link rel="stylesheet" th:href="@{/css/reset.css}">
+    <link rel="stylesheet" th:href="@{/css/common.css}">
+    <link rel="stylesheet" th:href="@{/css/01-index.css}">
+    <script th:src="@{/js/jquery.min.js}"></script>
+    <script th:src="@{/mallStatic/js/jquery.js}" type="text/javascript" charset="utf-8"></script>
+    <script th:src="@{/mallStatic/js/myjs.js}" type="text/javascript" charset="utf-8"></script>
+</head>
+<body>
+<div th:replace="shop/index::header"></div>
+<div th:replace="shop/index::logo_search"></div>
+<div class="navbar">
+    <div th:replace="shop/common::navbar"></div>
+</div>
+<div class="middle container">
+    <div th:replace="shop/user::user_nav"></div>
+    <div th:replace="shop/order::user_menu"></div>
+    <div class="order_details">
+        <div class="process">
+            <h2>订单详情</h2>
+            <p><span>订单号：<b th:text="${order.orderCode}"></b>
+            </span><span>订单金额：<b th:text="${'￥'+order.paymentMoney}"></b></span>
+                <span>订单状态：<i th:style="${order.state == 1 || order.state == 6 ? 'color: #FF0000' : 'color: #0C0C0C'}" th:text="${stateName}"></i></span></p>
+            <ol>
+                <li>
+                    <p></p>
+                    <div>
+                        <i></i>
+                        <span>提交订单</span>
+                    </div>
+                </li>
+                <li>
+                    <p></p>
+                    <div>
+                        <i></i>
+                        <span>付款成功</span>
+                    </div>
+                </li>
+                <li>
+                    <p></p>
+                    <div>
+                        <i></i>
+                        <span>商品出库</span>
+                    </div>
+                </li><li>
+                <p></p>
+                <div>
+                    <i></i>
+                    <span>确认收货</span>
+                </div>
+            </li>
+                <li>
+                    <p></p>
+                </li>
+            </ol>
+            <h3>[[*{#dates.format(order.createTime,'yyyy-MM-dd')}]]&nbsp;[[*{#dates.format(order.createTime,'HH:mm:ss')}]]
+                &nbsp;&nbsp;<span th:text="${order.state == 6 ? '订单超时未支付已自动取消':'订单创建成功！'}"></span></h3>
+            <dl>
+                <dt>收货信息</dt>
+                <dd><span>收货人：</span><i th:text="${order.receiverName}"></i></dd>
+                <dd><span>手机：</span>[[${order.phone}]]</dd>
+                <dd><span>收货地址：</span>[[${order.address}]]</dd>
+            </dl>
+        </div>
+        <div class="my_order">
+            <h3>结算清单</h3>
+            <div class="order_list">
+                <table border="" cellspacing="" cellpadding="">
+                    <thead>
+                    <tr>
+                        <th>商品LOGO</th>
+                        <th>商品名称</th>
+                        <th>单价</th>
+                        <th>数量</th>
+                        <th>小计(元)</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="orderDetail:${orderDetailList}">
+                        <td><img th:src="@{'http://localhost'+${orderDetail.logoPicPath}}" th:width="120px" th:height="120px"></td>
+                        <td th:text="${orderDetail.goodsName}"></td>
+                        <td th:text="${'￥'+orderDetail.price}"></td>
+                        <td th:text="${orderDetail.goodsNum}"></td>
+                        <td th:text="${orderDetail.totalPrice}"></td>
+                    </tbody>
+                </table>
+            </div>
+            <div class="total">
+                <ul>
+                    <li>
+                        <span>商品总价:</span>
+                        <i id="total" th:text="${'￥'+order.orderMoney}"></i>
+                    </li>
+                    <li>
+                        <span>优惠：</span>
+                        <i id="discount" th:text="${'￥'+order.discountMoney}"></i>
+                    </li>
+                    <li>
+                        <span>总计：</span>
+                        <i class="payment" th:text="${'￥'+order.paymentMoney}"></i>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<div th:replace="shop/index::copyfooter"></div>
+
+</body>
+</html>

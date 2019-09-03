@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="headerLink">
+		<meta charset="utf-8" />
+		<link rel="stylesheet" type="text/css" th:href="@{/mallStatic/css/common.css}"/>
+		<link rel="stylesheet" type="text/css" th:href="@{/mallStatic/css/index.css}"/>
+		<link rel="stylesheet" type="text/css" th:href="@{/mallStatic/css/style.css}"/>
+		<!--引入重置样式-->
+		<link rel="stylesheet" th:href="@{/css/reset.css}">
+		<!--引入公用样式-->
+		<link rel="stylesheet" th:href="@{/css/common.css}">
+		<!--引入首页样式-->
+		<link rel="stylesheet" th:href="@{/css/01-index.css}">
+		<script th:src="@{/js/jquery.min.js}"></script>
+		<script th:src="@{/mallStatic/js/jquery.js}" type="text/javascript"></script>
+		<script th:src="@{/mallStatic/js/index_banner.js}" type="text/javascript"></script>
+		<script th:src="@{/mallStatic/js/myjs.js}" type="text/javascript"></script>
+	</head>
+<body>
+	<div class="header" th:fragment="header">
+		<div class="container">
+			<p>您好，欢迎来到带艺术家商城！</p>
+			<ul th:if="${session.userSession == null}">
+				<li><i>您还未登录,请</i><a id="login" th:href="@{/mall/login}">登录</a><i>/</i><a id="reg" th:href="@{/mall/reg}">注册</a></li>
+			</ul>
+			<ul th:if="${session.userSession != null}">
+				<li>
+					<i>尊敬的会员：</i><i id="nick" th:text="${session.userSession.getNickName()}"></i><i>,欢迎您登录带艺术商城!</i>
+					<a id="logout" th:href="@{/user/logout}">退出</a><a id="center" th:href="@{/mall/userCenter}">个人中心</a>
+				</li>
+			</ul>
+		</div>
+	</div>
+	<div class="logo_search" th:fragment="logo_search">
+		<div class="container">
+			<div class="logo">
+				<a th:href="@{/mall/index}"><img th:src="@{/mallStatic/img/logo.jpg}"/></a>
+			</div>
+			<div id="searchBox">
+				<a th:href="@{/mall/myOrder(status=0)}" class="myOrder fr">我的订单</a>
+				<a th:href="@{/mall/viewShopCar}" class="shopCar fr">购物车 <span th:text="${session.totalCount}"></span></a>
+			</div>
+			<form class="search" th:action="@{/mall/goodsQuery}">
+				<input type="text" name="keyword"  placeholder="请输入搜索内容"/>
+				<button type="submit"><img th:src="@{/mallStatic/img/icon_search.png}"/></button>
+			</form>
+		</div>
+	</div>
+	<div class="navbar" th:fragment="navbar">
+		<div class="container">
+			<div class="dropdown">
+				<div class="dropdown_btn close">
+					<img th:src="@{/mallStatic/img/icon_list.png}"/>
+					<span>商品类型</span>
+				</div>
+				<div class="dropdown_menu">
+					<ol th:each="oneCategory:${oneCategoryList}">
+						<li class="dropdown_header"><img th:src="@{/mallStatic/img/icon_dfg.png}" alt="" /><a th:href="@{/mall/goodsList(oneCategoryId=${oneCategory.id})}" href="" th:text="${oneCategory.categoryName}"></a></li>
+					</ol>
+				</div>
+			</div>
+			<div class="nav">
+				<ul>
+					<li><a th:href="@{/mall/index}">首页</a></li>
+					<li><a th:href="@{/mall/goodsList(goodsParam='new')}">最新产品</a></li>
+					<li><a th:href="@{/mall/goodsList(goodsParam='hot')}">热门产品</a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<div class="banner">
+		<div class="bd">
+			<ul>
+				<li><a href="#"><img th:src="@{/mallStatic/img/index_banner01.jpg}"/></a></li>
+				<li><a href="#"><img th:src="@{/mallStatic/img/index_banner02.jpg}"/></a></li>
+				<li><a href="#"><img th:src="@{/mallStatic/img/index_banner03.jpg}"/></a></li>
+			</ul>
+		</div>
+		<div class="hd">
+			<ol>
+			</ol>
+		</div>
+		<div class="next">&gt;</div>
+		<div class="prve">&lt;</div>
+	</div>
+	<div class="section">
+		<div class="container">
+			<h2>全部产品<a th:href="@{/mall/goodsList}">更多</a></h2>
+			<ul class="pro_list">
+				<li th:each="goods:${goodsList}">
+					<a th:href="@{/mall/goodsDetail(id=${goods.id})}"><img th:src="@{'http://localhost'+${goods.logoPicPath}}" alt="">
+						<span th:text="${goods.goodsName}"></span>
+						<small th:text="${goods.goodsCore}"></small>
+						<b th:text="'￥'+${goods.price}"></b>
+					</a>
+				</li>
+			</ul>
+		</div>
+		<div class="clear"></div>
+		<div class="advert">
+			<a href=""><img th:src="@{/mallStatic/img/advert_01.jpg}"/></a>
+		</div>
+	</div>
+	<div class="section">
+		<div class="container">
+			<h2>热门商品<a th:href="@{/mall/goodsList}">更多</a></h2>
+			<ul class="pro_list">
+				<li th:each="goods:${hotGoodsList}">
+					<a th:href="@{/mall/goodsDetail(id=${goods.id})}"><img th:src="@{'http://localhost'+${goods.logoPicPath}}" alt="">
+						<span th:text="${goods.goodsName}"></span>
+						<small th:text="${goods.goodsCore}"></small>
+						<b th:text="'￥'+${goods.price}"></b>
+					</a>
+				</li>
+			</ul>
+			<div class="clear"></div>
+			<div class="advert">
+				<a href=""><img th:src="@{/mallStatic/img/advert_02.jpg}"/></a>
+			</div>
+		</div>
+	</div>
+	<div class="section">
+		<div class="container">
+			<h2>最新产品<a th:href="@{/mall/goodsList}">更多</a></h2>
+			<ul class="pro_list">
+				<li th:each="goods:${newGoodsList}">
+					<a th:href="@{/mall/goodsDetail(id=${goods.id})}"><img th:src="@{'http://localhost'+${goods.logoPicPath}}" alt="">
+						<span th:text="${goods.goodsName}"></span>
+						<small th:text="${goods.goodsCore}"></small>
+						<b th:text="'￥'+${goods.price}"></b>
+					</a>
+				</li>
+			</ul>
+		</div>
+		<div class="clear"></div>
+	</div>
+	<div class="help" th:fragment="helpfooter">
+		<div class="container">
+			<ul>
+				<li>
+					<img th:src="@{/mallStatic/img/icon_quality.jpg}"/>
+					<h1>品质保证</h1>
+				</li>
+				<li>
+					<img th:src="@{/mallStatic/img/icon_blitz.jpg}"/>
+					<h1>闪电发货</h1>
+				</li>
+				<li>
+					<img th:src="@{/mallStatic/img/icon_seven.jpg}"/>
+					<h1>7天无理由退货</h1>
+				</li>
+				<li>
+					<img th:src="@{/mallStatic/img/icon_complete.jpg}"/>
+					<h1>品类齐全</h1>
+				</li>
+				<li>
+					<img th:src="@{/mallStatic/img/icon_service.jpg}"/>
+					<h1>品类齐全</h1>
+				</li>
+			</ul>
+			<ol>
+				<li><h2>购物指南</h2></li>
+				<li><a href="#">免费注册</a></li>
+				<li><a href="#">开通支付宝</a></li>
+				<li><a href="#">支付宝充值</a></li>
+			</ol>
+			<ol>
+				<li><h2>购物保障</h2></li>
+				<li><a href="#">发票保障</a></li>
+				<li><a href="#">售后规则</a></li>
+				<li><a href="#">缺货赔付</a></li>
+			</ol>
+			<ol>
+				<li><h2>支付方式</h2></li>
+				<li><a href="#">快捷支付</a></li>
+				<li><a href="#">信用卡</a></li>
+				<li><a href="#">余额宝</a></li>
+				<li><a href="#">蚂蚁花呗</a></li>
+			</ol>
+			<ol>
+				<li><h2>客户服务</h2></li>
+				<li><a href="#">门店查询</a></li>
+				<li><a href="#">运输相关</a></li>
+				<li><a href="#">常见问题</a></li>
+			</ol>
+			<ol>
+				<li><h2>扫一扫</h2></li>
+				<li><img th:src="@{/mallStatic/img/ewm.jpg}" alt="" /></li>
+			</ol>
+		</div>
+	</div>
+	<div class="copy" th:fragment="copyfooter">
+		<div class="container">
+			<h3>关于德尔 帮助中心 开放平台 诚聘英才 联系我们 网站合作 法律声明及隐私权政策 知识产权 廉正举报 规则意见征集</h3>
+			<p>互联网药品信息服务资质证书编号：浙-（经营性）-2017-0005   浙公网安备 33010002000120号</p>
+			<p>© 2003-2017 TMALL.COM 版权所有</p>
+		</div>
+	</div>
+</body>
+</html>

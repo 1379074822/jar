@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:include="common::header">
+</head>
+<body class="fixed-sidebar full-height-layout gray-bg"
+      style="overflow: hidden">
+<div id="wrapper">
+    <div th:replace="common::leftBar"></div>
+    <div id="page-wrapper" class="gray-bg dashbard-1">
+        <div th:replace="common::rightTop1Bar"></div>
+        <div th:replace="common::rightTop2Bar"></div>
+        <div class="row J_mainContent" style="overflow:auto" id="content-main">
+            <!--右侧内容-->
+            <div class="clearfix"></div>
+            <div class="row">
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <div class="x_panel">
+                        <div class="x_title">
+                            <h2>新增商品信息<i class="fa fa-user"></i><small th:text="${session.adminSession.adminName}"></small></h2>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="x_content">
+                            <div class="clearfix"></div>
+                            <form class="form-horizontal form-label-left" th:action="@{/system/goods/goodsAddSave}" method="post" enctype="multipart/form-data">
+                                <div class="item form-group">
+                                    <label class="control-label col-md-3 col-sm-3 col-xs-12" th:for="name">商品名称 <span class="required">*</span></label>
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <input id="goodsName" class="form-control col-md-7 col-xs-12" data-validate-length-range="20"
+                                               data-validate-words="1" name="goodsName"  required="required"
+                                               placeholder="请输入商品名称" type="text">
+                                    </div>
+                                </div>
+
+                                <div class="item form-group">
+                                    <label class="control-label col-md-3 col-sm-3 col-xs-12" th:for="name">商品货号 <span class="required">*</span></label>
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <input id="goodsCore" class="form-control col-md-7 col-xs-12" data-validate-length-range="20"
+                                               data-validate-words="1" name="goodsCore"  required="required"
+                                               placeholder="请输入商品货号" type="text">
+                                        <span>[[${InputError1}]]</span>
+                                    </div>
+                                </div>
+
+                                <div class="item form-group">
+                                    <label class="control-label col-md-3 col-sm-3 col-xs-12" th:for="name">商品描述 <span class="required">*</span></label>
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <textarea id="goodsDescription" name="goodsDescription" required="required"
+                                                  placeholder="请描述本商品的相关信息。"
+                                                  class="form-control col-md-7 col-xs-12"></textarea>
+                                    </div>
+                                </div>
+
+                                <div class="item form-group">
+                                    <label class="control-label col-md-3 col-sm-3 col-xs-12" th:for="select">一级分类 <span class="required">*</span></label>
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <select name="oneCategoryId" id="oneCategoryId" class="form-control"   required="required"> </select>
+                                    </div>
+                                </div>
+
+                                <div class="item form-group">
+                                    <label class="control-label col-md-3 col-sm-3 col-xs-12"  th:for="select">二级分类 <span class="required">*</span></label>
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <select name="twoCategoryId" id="twoCategoryId" class="form-control"  required="required"></select>
+                                    </div>
+                                </div>
+
+
+                                <div class="item form-group">
+                                    <label class="control-label col-md-3 col-sm-3 col-xs-12" th:for="name">商品状态 <span class="required">*</span>
+                                    </label>
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <input type="hidden" name="state" id="state" value="3">待审核
+                                    </div>
+                                </div>
+
+                                <div class="item form-group">
+                                    <label class="control-label col-md-3 col-sm-3 col-xs-12" th:for="number">成本 <span class="required">*</span>
+                                    </label>
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <input type="number" step="0.01" id="cost" name="cost" required="required"
+                                               placeholder="请输入成本" class="form-control col-md-7 col-xs-12">
+                                    </div>
+                                </div>
+
+                                <div class="item form-group">
+                                    <label class="control-label col-md-3 col-sm-3 col-xs-12" th:for="number">售价 <span class="required">*</span>
+                                    </label>
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <input type="number" step="0.01" id="price" name="price"   required="required"
+                                               placeholder="请输入售价" class="form-control col-md-7 col-xs-12">
+                                    </div>
+                                </div>
+
+                                <div class="item form-group">
+                                    <label class="control-label col-md-3 col-sm-3 col-xs-12" th:for="number">库存 <span class="required">*</span>
+                                    </label>
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <input type="number" id="stock" name="stock"  required="required"
+                                               placeholder="请输入库存" class="form-control col-md-7 col-xs-12">
+                                    </div>
+                                </div>
+
+                                <div class="item form-group">
+                                    <label class="control-label col-md-3 col-sm-3 col-xs-12" th:for="name">LOGO图片 <span class="required">*</span>
+                                    </label>
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <input type="file" class="form-control col-md-7 col-xs-12" name="a_logoPicPath"  required="required" id="a_logoPicPath"/>
+                                        <span>[[${fileUploadError}]]</span>
+                                    </div>
+                                </div>
+                                <div class="ln_solid"></div>
+                                <div class="form-group">
+                                    <div class="col-md-6 col-md-offset-3">
+                                        <button id="send" type="submit" class="btn btn-success">保存</button>
+                                        <button type="button" class="btn btn-primary" id="back">返回</button>
+                                        <br/><br/>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div th:replace="common::rightFooter"></div>
+    </div>
+</div>
+<div th:include="common::footer"></div>
+<script th:src="@{/mallStatic/js/system/goodsadd.js}"></script>
+</body>
+</html>

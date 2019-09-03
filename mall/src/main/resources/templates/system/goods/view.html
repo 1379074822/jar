@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:include="common::header">
+    <meta charset="UTF-8">
+    <title>Title</title>
+<body class="fixed-sidebar full-height-layout gray-bg"
+      style="overflow: hidden">
+<div id="wrapper">
+    <div th:replace="common::leftBar"></div>
+    <div id="page-wrapper" class="gray-bg dashbard-1">
+        <div th:replace="common::rightTop1Bar"></div>
+        <div th:replace="common::rightTop2Bar"></div>
+        <div class="row J_mainContent" style="overflow:auto" id="content-main">
+            <!--右侧的内容-->
+            <div class="clearfix"></div>
+            <div class="row">
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <div class="x_panel">
+                        <div class="x_title">
+                            <h2>查看商品基础信息 <i class="fa fa-user"></i><small th:text="${session.adminSession.account}"></small></h2>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="x_content1">
+                            <form class="form-horizontal form-label-left" >
+                                <input type="hidden" name="id" th:value="${goods.id}">
+                                <div class="item form-group">
+                                    <label class="control-label col-md-3 col-sm-3 col-xs-12" th:for="name">商品名称 <span class="required">*</span>
+                                    </label>
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <input class="form-control col-md-7 col-xs-12" th:value="${goods.goodsName}" type="text" readonly="readonly">
+                                    </div>
+                                </div>
+                                <div class="item form-group">
+                                    <label class="control-label col-md-3 col-sm-3 col-xs-12" th:for="name">商品货号 <span class="required">*</span>
+                                    </label>
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <input type="text" class="form-control col-md-7 col-xs-12" th:value="${goods.goodsCore}" readonly="readonly">
+                                    </div>
+                                </div>
+
+                                <div class="item form-group">
+                                    <label class="control-label col-md-3 col-sm-3 col-xs-12" th:for="name">商品简介 <span class="required">*</span>
+                                    </label>
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <textarea class="form-control col-md-7 col-xs-12" readonly="readonly" th:text="${goods.goodsDescription}"></textarea>
+                                    </div>
+                                </div>
+
+                                <div class="item form-group">
+                                    <label class="control-label col-md-3 col-sm-3 col-xs-12" th:for="select">所属分类 <span class="required">*</span></label>
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <input type="text" class="form-control col-md-7 col-xs-12"
+                                               th:value="${goods.oneCategoryName + '--> '+ goods.twoCategoryName}" readonly="readonly">
+                                    </div>
+                                </div>
+
+                                <div class="item form-group">
+                                    <label class="control-label col-md-3 col-sm-3 col-xs-12" th:for="name">商品状态 <span class="required">*</span>
+                                    </label>
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <input class="form-control col-md-7 col-xs-12" readonly="readonly" th:value="${goods.stateName}" type="text">
+                                    </div>
+                                </div>
+
+                                <div class="item form-group">
+                                    <label class="control-label col-md-3 col-sm-3 col-xs-12" th:for="number">成本 <span class="required">*</span>
+                                    </label>
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <input type="text" th:value="${goods.cost}" class="form-control col-md-7 col-xs-12" readonly="readonly">
+                                    </div>
+                                </div>
+
+                                <div class="item form-group">
+                                    <label class="control-label col-md-3 col-sm-3 col-xs-12" th:for="number">售价 <span class="required">*</span>
+                                    </label>
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <input type="text" th:value="${goods.price}" class="form-control col-md-7 col-xs-12" readonly="readonly">
+                                    </div>
+                                </div>
+                                <div class="item form-group">
+                                    <label class="control-label col-md-3 col-sm-3 col-xs-12" th:for="textarea">创建时间 <span class="required">*</span>
+                                    </label>
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <input type="text" th:value="*{#dates.format(goods.createTime,'yyyy-MM-dd HH:mm:ss')}" class="form-control col-md-7 col-xs-12" readonly="readonly">
+                                    </div>
+                                </div>
+
+                                <div class="item form-group">
+                                    <label class="control-label col-md-3 col-sm-3 col-xs-12" th:for="name">LOGO图片 <span class="required">*</span>
+                                    </label>
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <span th:if="${goods.logoPicPath == null || goods.logoPicPath == ''}">暂无</span>
+                                        <span th:if="${goods.logoPicPath != null}"><img th:src="@{'http://localhost'+${goods.logoPicPath}}" width="100px;"/></span>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-6 col-md-offset-3">
+                                <button type="button" class="btn btn-primary" id="backGoods">返回</button>
+                            </div>
+                        </div>
+                        <div class="clearfix"></div>
+                        <br/><br/>
+                    </div>
+                </div>
+            </div>
+            <div th:replace="common::rightFooter"></div>
+        </div>
+    </div>
+</div>
+<div th:include="common::footer"></div>
+<script th:src="@{/mallStatic/js/system/userlist.js}"></script>
+</body>
+</html>

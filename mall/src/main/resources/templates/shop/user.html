@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="utf-8" />
+	<title>用户中心</title>
+	<link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+	<link rel="stylesheet" type="text/css" th:href="@{/mallStatic/css/common.css}"/>
+	<link rel="stylesheet" type="text/css" th:href="@{/mallStatic/css/style.css}"/>
+	<link rel="stylesheet" type="text/css" th:href="@{/mallStatic/css/user.css}"/>
+	<link rel="stylesheet" th:href="@{/css/reset.css}">
+	<link rel="stylesheet" th:href="@{/css/common.css}">
+	<link rel="stylesheet" th:href="@{/css/01-index.css}">
+	<script th:src="@{/js/jquery.min.js}"></script>
+	<script th:src="@{/js/bootstrap.min.js}"></script>
+	<script th:src="@{/mallStatic/js/check.js}" type="text/javascript"></script>
+	<script th:src="@{/mallStatic/js/jquery.js}" type="text/javascript"></script>
+	<script th:src="@{/mallStatic/js/myjs.js}" type="text/javascript"></script>
+</head>
+<body>
+<div th:replace="shop/index::header"></div>
+<div th:replace="shop/index::logo_search"></div>
+<div class="navbar">
+	<div th:replace="shop/common::navbar"></div>
+</div>
+<div class="middle container">
+	<span th:if="${session.userSession == null}">
+		<h1>您未登录，无法查看个人中心，赶紧<a th:href="@{/mall/login}">登录</a>吧!</h1>
+	</span>
+
+	<span th:if="${session.userSession != null}">
+		<div class="user_nav" th:fragment="user_nav">
+			<img src=""/>
+			<p><i th:text="${session.userSession.getNickName()}+'，欢迎您进入'"></i><span style="color: #ac2925">个人中心！</span></p>
+		</div>
+		<div class="user_menu" th:fragment="user_menu">
+			<ol>
+				<li><a th:href="@{/mall/myOrder(status=0)}">我的订单</a></li>
+				<li class="on"><a th:href="@{/mall/userCenter}">个人资料</a></li>
+				<li><a th:href="@{/mall/modifyPwd}">修改密码</a></li>
+				<li>
+					<form th:action="@{/mall/address}">
+						<input type="hidden" name="pageIndex" value="1">
+						<button type="submit">管理地址</button>
+					</form>
+				</li>
+				<li>
+					<form th:action="@{/user/viewPoint}">
+						<input type="hidden" name="pageIndex" value="1">
+						<button type="submit">积分明细</button>
+					</form>
+				</li>
+			</ol>
+		</div>
+		<div class="pre_data">
+			<form action="">
+				<label>账号：</label>
+				<input type="text" name="account" th:value="${user.account}"/><br/>
+				<label>昵称：</label>
+				<input type="text" name="nickName" th:value="${user.getNickName()}"/><br/>
+				<label>手机号：</label>
+				<input type="text" name="phone" th:value="${user.getPhone()}"/><br/>
+				<label>邮箱：</label>
+				<input type="text" name="email" th:value="${user.email}"/><br/>
+				<label>我的积分：</label>
+				<input type="text" name="point" th:value="${user.point}"/><br/>
+				<label>注册时间：</label>
+				<input type="text" name="createTime" th:value="*{#dates.format(user.getCreateTime(),'yyyy-MM-dd HH:mm:ss')}"/><br/>
+			</form>
+			<button class="btn btn-success btn-lg" data-toggle="modal" data-target="#myModal">修改信息</button>
+		</div>
+	</span>
+</div>
+
+<!--修改信息的bootstrap模态框-->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"
+						aria-hidden="true">×
+				</button>
+				<h4 class="modal-title" id="myModalLabel">
+					修改用户信息
+				</h4>
+			</div>
+			<form th:action="@{/user/modify}" method="post" class="newAddressForm">
+				<div class="modal-body">
+					<input type="hidden" th:value="${user.id}" name="id">
+					<input type="hidden" th:value="${user.account}" name="account"/>
+					<label>昵称: <input type="text" th:value="${user.nickName}" name="nickName"/></label></br>
+					<label>手机号:<input type="text" th:value="${user.phone}" name="phone"/></label></br>
+					<label>邮箱: <input type="text" th:value="${user.email}" name="email"/></label>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+					<button type="submit" class="btn btn-primary">提交更改</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+<span th:if="${session.userSession != null}">
+	<div th:replace="shop/index::copyfooter"></div>
+</span>
+</body>
+</html>

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.mall.mapper.UserPointMapper" >
+
+
+  <select id="getPointList" resultType="UserPoint">
+    select p.id,p.change_point,p.create_time,p.current_point,
+            (select value_name from t_data_dictionary  d where type_code = 'POINT' and d.value_id = p.source) as pointState,
+            (select account from t_user u where u.id = p.user_id) as userAccount
+            from t_user_point p
+        where p.user_id = #{userId}
+    order by create_time DESC limit #{from},#{pageSize}
+  </select>
+
+  <select id="getPointCount" resultType="int">
+    select COUNT(*) as count from t_user_point where user_id = #{userId}
+  </select>
+
+  <insert id="insert" parameterType="UserPoint" >
+    insert into t_user_point
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="source != null" >
+        source,
+      </if>
+      <if test="changePoint != null" >
+        change_point,
+      </if>
+      <if test="currentPoint != null">
+        current_point,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id},
+      </if>
+      <if test="userId != null" >
+        #{userId},
+      </if>
+      <if test="source != null" >
+        #{source},
+      </if>
+      <if test="changePoint != null" >
+        #{changePoint},
+      </if>
+      <if test="currentPoint != null" >
+        #{currentPoint},
+      </if>
+      <if test="createTime != null" >
+        #{createTime},
+      </if>
+    </trim>
+  </insert>
+
+  <update id="updateById" parameterType="UserPoint" >
+    update t_user_point
+    <set >
+      <if test="userId != null" >user_id = #{userId},</if>
+      <if test="source != null" >source = #{source},</if>
+      <if test="changePoint != null" >change_point = #{changePoint},</if>
+      <if test="createTime != null" >create_time = #{createTime},</if>
+      <if test="currentPoint != null" >current_point = #{currentPoint},</if>
+    </set>
+    where id = #{id}
+  </update>
+
+
+</mapper>

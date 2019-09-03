@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.mall.mapper.GoodsCommentMapper" >
+
+  <select id="getById" resultType="GoodsComment" parameterType="Integer" >
+    select *,(select account from t_user u where u.id = c.user_id) as account
+      from t_goods_comment c where c.goods_id = #{id}
+      order by create_time DESC limit #{from},#{pageSize}
+  </select>
+
+  <select id="getCountById" resultType="int" parameterType="Integer">
+    select count(*) from t_goods_comment where goods_id = #{id}
+  </select>
+
+  <delete id="delete" parameterType="Integer" >
+    delete from t_goods_comment where id = #{id}
+  </delete>
+
+  <insert id="insert" parameterType="List" >
+    insert into t_goods_comment (goods_id,user_id,content) values 
+       <foreach collection="list" item="item" index="index" separator=",">
+         (#{item.goodsId},#{userId},#{item.content})
+       </foreach>
+  </insert>
+
+</mapper>

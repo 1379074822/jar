@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8" />
+    <title>商品列表</title>
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" th:href="@{/mallStatic/css/common.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/mallStatic/css/style.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/mallStatic/css/shop_list.css}"/>
+    <link rel="stylesheet" th:href="@{/css/reset.css}">
+    <link rel="stylesheet" th:href="@{/css/common.css}">
+    <link rel="stylesheet" th:href="@{/css/01-index.css}">
+    <script th:src="@{/js/bootstrap.min.js}"></script>
+    <script th:src="@{/mallStatic/js/jquery.js}" type="text/javascript"></script>
+    <script th:src="@{/mallStatic/js/myjs.js}" type="text/javascript"></script>
+</head>
+<body>
+<div th:replace="shop/index::header"></div>
+<div th:replace="shop/index::logo_search"></div>
+<div class="navbar">
+    <div th:replace="shop/common::navbar"></div>
+</div>
+<div class="middle">
+    <div class="pro_list container">
+        <ul>
+            <li th:each="goods:${goodsList}">
+                <a th:href="@{/mall/goodsDetail(id=${goods.id})}"><img th:src="@{'http://localhost'+${goods.logoPicPath}}" alt="">
+                    <span th:utext="${goods.goodsName}"></span>
+                    <small th:text="${goods.goodsCore}"></small>
+                    <b th:text="'￥'+${goods.price}"></b>
+                    <small th:utext="${goods.goodsDescription}"></small>
+                </a>
+            </li>
+        </ul>
+        <div class="clear"></div>
+    </div>
+</div>
+<div th:replace="shop/index::helpfooter"></div>
+<div th:replace="shop/index::copyfooter"></div>
+<script th:src="@{/mallStatic/js/rollpage.js}" type="text/javascript"></script>
+</body>
+</html>

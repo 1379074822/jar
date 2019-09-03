@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="utf-8" />
+	<title>支付成功</title>
+	<link rel="stylesheet" type="text/css" th:href="@{/mallStatic/css/common.css}"/>
+	<link rel="stylesheet" type="text/css" th:href="@{/mallStatic/css/style.css}"/>
+	<link rel="stylesheet" type="text/css" th:href="@{/mallStatic/css/pay_success.css}"/>
+	<!--引入重置样式-->
+	<link rel="stylesheet" th:href="@{/css/reset.css}">
+	<!--引入公用样式-->
+	<link rel="stylesheet" th:href="@{/css/common.css}">
+	<!--引入首页样式-->
+	<link rel="stylesheet" th:href="@{/css/01-index.css}">
+	<script th:src="@{/js/jquery.min.js}"></script>
+	<script th:src="@{/mallStatic/js/jquery.js}" type="text/javascript" charset="utf-8"></script>
+	<script th:src="@{/mallStatic/js/myjs.js}" type="text/javascript" charset="utf-8"></script>
+</head>
+<body>
+<div th:replace="shop/index::header"></div>
+<div th:replace="shop/index::logo_search"></div>
+<div class="navbar">
+	<div th:replace="shop/common::navbar"></div>
+</div>
+<div class="order container">
+	<img th:src="@{/mallStatic/img/pay_success.jpg}"/>
+	<div class="order_con">
+		<h1>付款成功！</h1>
+		<p>已完成付款，订单号为[[${order.orderCode}]]，请您耐心等待,我们将在24小时内发货</p>
+		<h3>已付金额：<b>￥[[${order.paymentMoney}]]</b>
+			&nbsp;&nbsp;&nbsp;&nbsp;订单状态：待发货
+		</h3>
+		<a th:href="@{/mall/orderDetails(id=${order.id})}">订单详情<i class="caret"></i></a>
+	</div>
+</div>
+<div th:replace="shop/index::helpfooter"></div>
+<div th:replace="shop/index::copyfooter"></div>
+</body>
+</html>

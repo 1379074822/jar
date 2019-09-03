@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8" />
+    <title>购物车</title>
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" th:href="@{/mallStatic/css/common.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/mallStatic/css/style.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/mallStatic/css/shop_cart.css}"/>
+    <!--引入重置样式-->
+    <link rel="stylesheet" th:href="@{/css/reset.css}">
+    <!--引入公用样式-->
+    <link rel="stylesheet" th:href="@{/css/common.css}">
+    <!--引入首页样式-->
+    <link rel="stylesheet" th:href="@{/css/01-index.css}">
+    <script th:src="@{/mallStatic/js/jquery.js}" type="text/javascript" charset="utf-8"></script>
+    <script th:src="@{/js/plugins/layer/layer.min.js}"></script>
+    <script th:src="@{/mallStatic/js/shop_cart.js}" type="text/javascript" charset="utf-8"></script>
+
+</head>
+<body>
+<div th:replace="shop/index::header"></div>
+<div th:replace="shop/index::logo_search"></div>
+<div class="navbar">
+    <div th:replace="shop/common::navbar"></div>
+</div>
+    <div class="container cart">
+        <div class="process">
+            <ol>
+                <li>
+                    <p></p>
+                    <div>
+                        <i></i>
+                        <span>购物车</span>
+                    </div>
+                </li>
+                <li>
+                    <p></p>
+                    <div>
+                        <i></i>
+                        <span>确定订单</span>
+                    </div>
+                </li>
+                <li>
+                    <p></p>
+                    <div>
+                        <i></i>
+                        <span>支付</span>
+                    </div>
+                </li>
+                <li>
+                    <p></p>
+                </li>
+            </ol>
+        </div>
+        <form class="cart_list">
+            <input type="hidden" class="goodsName" th:value="${goodsName}"/>
+            <input type="hidden" class="stock" th:value="${stock}"/>
+            <table id="datatable-responsive" class="table table-striped table-bordered dt-responsive nowrap dataTable no-footer dtr-inline collapsed"
+                   cellspacing="0" width="100%" role="grid" aria-describedby="datatable-responsive_info" style="width: 100%;">
+                <thead>
+                <tr>
+                    <th class="sorting_asc" tabindex="0"
+                        aria-controls="datatable-responsive" rowspan="1" colspan="1"
+                        aria-label="First name: activate to sort column descending"
+                        aria-sort="ascending" style="text-align: center">全选</a>
+                    </th>
+                    <th class="sorting_asc" tabindex="0"
+                        aria-controls="datatable-responsive" rowspan="1" colspan="1"
+                        aria-label="First name: activate to sort column descending"
+                        aria-sort="ascending" style="text-align: center">商品图片</th>
+                    <th class="sorting_asc" tabindex="0"
+                        aria-controls="datatable-responsive" rowspan="1" colspan="1"
+                        aria-label="First name: activate to sort column descending"
+                        aria-sort="ascending" style="text-align: center">商品名称</th>
+                    <th class="sorting_asc" tabindex="0"
+                        aria-controls="datatable-responsive" rowspan="1" colspan="1"
+                        aria-label="First name: activate to sort column descending"
+                        aria-sort="ascending" style="text-align: center">单价（元）</th>
+                    <th class="sorting_asc" tabindex="0"
+                        aria-controls="datatable-responsive" rowspan="1" colspan="1"
+                        aria-label="First name: activate to sort column descending"
+                        aria-sort="ascending" style="text-align: center">数量</th>
+                    <th class="sorting_asc" tabindex="0"
+                        aria-controls="datatable-responsive" rowspan="1" colspan="1"
+                        aria-label="First name: activate to sort column descending"
+                        aria-sort="ascending" style="text-align: center">小计（元）</th>
+                    <th class="sorting_asc" tabindex="0"
+                        aria-controls="datatable-responsive" rowspan="1" colspan="1"
+                        aria-label="First name: activate to sort column descending"
+                        aria-sort="ascending" style="text-align: center">操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr role="row" class="odd" th:each="shopCar:${shopCarList}">
+                    <td>
+                        <input type="hidden" id="price" th:value="${shopCar.price}">
+                        <input type="checkbox" name="check" class="checkTick" th:value="${shopCar.id}">
+                    </td>
+                    <td><img th:src="@{'http://localhost'+${shopCar.logoPicPath}}" th:width="120px" th:height="120px"></td>
+                    <td th:text="${shopCar.goodsName}"></td>
+                    <td id="soloPrice" th:text="${shopCar.soloPrice}"></td>
+                    <td>
+                        <input type="hidden" id="shopCarId" th:value="${shopCar.id}">
+                        <button type="button" style="border: none" class="decline">-</button>
+                        <input style="border: none" type="number"  class="num" th:value="${shopCar.goodsNum}"/>
+                        <button style="border: none" type="button" class="increase">+</button>
+                    </td>
+                    <td th:text="${shopCar.price}"></td>
+                    <td style="color: #0e9aef"><a th:href="@{/mall/delShopCar(id=${shopCar.id})}">删除</a> </td>
+                </tr>
+                </tbody>
+            </table>
+        </form>
+        <div class="pro_total">
+            <ol>
+                <li>
+                    <input type="checkbox" id="all_tick"><i>全选</i>
+                </li>
+                <li>
+                    <a id="del_sel" href="" style="color:#ac2925;">删除所选商品</a>
+                </li>
+                <li>已选中<b id="count">0</b>件商品</li>
+                <li>合计（不含运费）：<i>￥</i><i id="total">0.00</i></li>
+                <li><a href="javascript:void(0)" id="cartPay">结算</a></li>
+            </ol>
+        </div>
+    </div>
+    <div th:replace="shop/index::copyfooter"></div>
+</body>
+</html>

@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mall.mapper.OrderMapper">
+
+  <select id="getById" parameterType="Integer" resultType="Order">
+    select *,(select account from t_user u where u.id = o.user_id) as account,
+          (select value_name from t_data_dictionary d where o.state = d.value_id and d.type_code = 'ORDER_STATE')
+          as stateName from t_order o
+     where id = #{id}
+  </select>
+
+  <select id="getOrderListByParam" resultType="Order">
+    select o.id,o.address,o.phone,o.receiver_name,o.order_code,o.state,o.create_time,
+            o.order_money,o.discount_money,o.payment_money,pay_time,
+            (select account from t_user u where u.id = o.user_id) as account,
+            (select value_name from t_data_dictionary d where d.value_id = o.state and d.type_code = 'ORDER_STATE')
+            as stateName
+      from t_order o
+    <trim prefix="where" prefixOverrides="and | or">
+      <if test="orderCode != null and orderCode != '' ">
+        and o.order_code = #{orderCode}
+      </if>
+      <if test="receiverName != null and receiverName != '' ">
+        and o.receiver_name like CONCAT ('%',#{receiverName},'%')
+      </if>
+      <if test="state != null and state != ''">
+        and o.state = #{state}
+      </if>
+      <if test="createTime != null and createTime !='' ">
+        and DATE_FORMAT(o.create_time,'%Y-%m-%d') = #{createTime}
+      </if>
+    </trim>
+    ORDER by modify_time DESC limit #{from},#{pageSize}
+  </select>
+
+  <select id="getOrderCountByParam" resultType="int">
+    select COUNT(*) as count from t_order o
+    <trim prefix="where" prefixOverrides="and | or">
+      <if test="orderCode != null and orderCode != '' ">
+        and o.order_code = #{orderCode}
+      </if>
+      <if test="receiverName != null and receiverName != '' ">
+        and o.receiver_name like CONCAT ('%',#{receiverName},'%')
+      </if>
+      <if test="state != null and state != ''">
+        and o.state = #{state}
+      </if>
+      <if test="createTime != null and createTime !='' ">
+        and DATE_FORMAT(o.create_time,'%Y-%m-%d') = #{createTime}
+      </if>
+    </trim>
+  </select>
+
+  <select id="getOrderList" parameterType="Integer" resultType="Order">
+    select *,(select value_name from t_data_dictionary d where o.state = d.value_id and d.type_code = 'ORDER_STATE')
+           as stateName from t_order o
+    <trim prefix="where" prefixOverrides="and | or">
+      <if test="state != 0">
+        and o.state = #{state}
+      </if>
+      <if test="userId != null">
+        and o.user_id = #{userId}
+      </if>
+    </trim>
+    order by create_time DESC
+  </select>
+
+  <select id="getStateName" parameterType="Integer" resultType="String">
+      select value_name from t_data_dictionary d where d.value_id = #{state} and d.type_code = 'ORDER_STATE'
+  </select>
+
+  <insert id="insert" parameterType="Order">
+    insert into t_order
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="orderCode != null">
+        order_code,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="address != null">
+        address,
+      </if>
+      <if test="phone != null">
+        phone,
+      </if>
+      <if test="receiverName != null">
+        receiver_name,
+      </if>
+      <if test="goodsCount != null">
+        goods_count,
+      </if>
+      <if test="orderMoney != null">
+        order_money,
+      </if>
+      <if test="discountMoney != null">
+        discount_money,
+      </if>
+      <if test="paymentMoney != null">
+        payment_money,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="state != null">
+        state,
+      </if>
+      <if test="orderPoint != null">
+        order_point,
+      </if>
+      <if test="payTime != null">
+        pay_time,
+      </if>
+      <if test="modifyTime != null">
+        modify_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="orderCode != null">
+        #{orderCode,jdbcType=BIGINT},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="address != null">
+        #{address},
+      </if>
+      <if test="phone != null">
+        #{phone},
+      </if>
+      <if test="receiverName != null">
+        #{receiverName},
+      </if>
+      <if test="goodsCount != null">
+        #{goodsCount,jdbcType=INTEGER},
+      </if>
+      <if test="orderMoney != null">
+        #{orderMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="discountMoney != null">
+        #{discountMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="paymentMoney != null">
+        #{paymentMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="state != null">
+        #{state,jdbcType=INTEGER},
+      </if>
+      <if test="orderPoint != null">
+        #{orderPoint,jdbcType=INTEGER},
+      </if>
+      <if test="payTime != null">
+        #{payTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifyTime != null">
+        #{modifyTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+
+  <update id="updateById" parameterType="Order">
+    update t_order
+    <set>
+      <if test="orderCode != null">order_code = #{orderCode,jdbcType=BIGINT},</if>
+      <if test="userId != null">user_id = #{userId,jdbcType=INTEGER},</if>
+      <if test="address != null">address = #{address},</if>
+      <if test="phone != null">phone = #{phone},</if>
+      <if test="receiverName != null">receiver_name = #{receiverName},</if>
+      <if test="goodsCount != null">goods_count = #{goodsCount,jdbcType=INTEGER},</if>
+      <if test="orderMoney != null">order_money = #{orderMoney,jdbcType=DECIMAL},</if>
+      <if test="discountMoney != null">discount_money = #{discountMoney,jdbcType=DECIMAL},</if>
+      <if test="paymentMoney != null">payment_money = #{paymentMoney,jdbcType=DECIMAL},</if>
+      <if test="createTime != null">create_time = #{createTime,jdbcType=TIMESTAMP},</if>
+      <if test="state != null">state = #{state,jdbcType=INTEGER},</if>
+      <if test="orderPoint != null">order_point = #{orderPoint,jdbcType=INTEGER},</if>
+      <if test="payTime != null">pay_time = #{payTime,jdbcType=TIMESTAMP},</if>
+      <if test="modifyTime != null">modify_time = #{modifyTime,jdbcType=TIMESTAMP},</if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <select id="getByCode" parameterType="Long" resultType="Order">
+    select * from t_order where order_code = #{orderCode} limit 1
+  </select>
+
+  <delete id="deleteById" parameterType="Integer">
+    delete from t_order where id = #{id}
+  </delete>
+  
+  <select id="getDayCount" resultType="int">
+    select count(*) from t_order where state not in(1,6)
+      and DATE_FORMAT(create_time,'%Y-%m-%d') = #{createTime}
+  </select>
+
+  <select id="getDayMoney" resultType="Decimal">
+    select sum(payment_money) from t_order where state not in(1,6)
+      and DATE_FORMAT(create_time,'%Y-%m-%d') = #{createTime}
+  </select>
+
+</mapper>

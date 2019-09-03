@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.mall.mapper.AddressInfoMapper" >
+
+  <delete id="deleteById" parameterType="Integer" >
+    delete from t_address_info
+    where id = #{id}
+  </delete>
+
+  <insert id="insert" parameterType="AddressInfo" >
+    insert into t_address_info
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="provinceName != null" >
+        province_name,
+      </if>
+      <if test="cityName != null" >
+        city_name,
+      </if>
+      <if test="districtName != null" >
+        district_name,
+      </if>
+      <if test="address != null" >
+        address,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="phone != null" >
+        phone,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="receiverName != null" >
+        receiver_name,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="modifyTime != null" >
+        modify_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="provinceName != null" >
+        #{provinceName,jdbcType=VARCHAR},
+      </if>
+      <if test="cityName != null" >
+        #{cityName,jdbcType=VARCHAR},
+      </if>
+      <if test="districtName != null" >
+        #{districtName,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null" >
+        #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="phone != null" >
+        #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="receiverName != null" >
+        #{receiverName,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifyTime != null" >
+        #{modifyTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+
+  <update id="updateState" parameterType="Integer">
+    update t_address_info set status = 1 where id = #{id}
+  </update>
+
+  <update id="updateNotId" parameterType="Integer">
+    update t_address_info set status = 0 where id not in(#{id})
+  </update>
+
+  <select id="getAddressList" resultType="AddressInfo">
+    select * from t_address_info where user_id = #{userId}
+          order by create_time DESC limit #{from},#{pageSize}
+  </select>
+
+  <select id="getAddressCount" resultType="Int">
+    select count(*) as count from t_address_info
+       where user_id = #{userId}
+  </select>
+  
+  <select id="getDefaultAddress" resultType="AddressInfo">
+    select * from t_address_info where status = 1 limit 1
+  </select>
+
+  <select id="getAddress" resultType="AddressInfo">
+    select * from t_address_info where id = #{id} limit 1
+  </select>
+
+</mapper>

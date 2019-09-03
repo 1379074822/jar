@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:include="common::header">
+</head>
+<body class="fixed-sidebar full-height-layout gray-bg"
+      style="overflow: hidden">
+<div id="wrapper">
+    <div th:replace="common::leftBar"></div>
+    <div id="page-wrapper" class="gray-bg dashbard-1">
+        <div th:replace="common::rightTop1Bar"></div>
+        <div th:replace="common::rightTop2Bar"></div>
+        <div class="row J_mainContent" style="overflow:auto" id="content-main">
+            <!--右侧内容-->
+            <div class="clearfix"></div>
+            <div class="row" style="margin-top: 10px;margin-left: 10px;border-radius: 3px;border: 0.8px solid #b3b3b3;margin-bottom: 15px;">
+                <div class="col-md-12">
+                    <div class="x_panel">
+                        <div class="x_title">
+                            <h2>
+                                商品管理 <i class="fa fa-user"></i><small></small>
+                            </h2>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="x_content">
+                            <form method="post" th:action="@{/system/goods/list}">
+                                <input type="hidden" name="pageIndex" value="1" />
+                                <ul>
+                                    <li>
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12">商品名称</label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                <input name="queryGoodsName" type="text" class="form-control col-md-7 col-xs-12" th:value="${queryGoodsName}">
+                                            </div>
+                                        </div>
+                                    </li>
+
+                                    <li>
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12">商品货号</label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                <input name="queryGoodsCore" type="text" class="form-control col-md-7 col-xs-12" th:value="${queryGoodsCore}">
+                                            </div>
+                                        </div>
+                                    </li>
+
+                                    <li>
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12">上架状态</label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                <select name="queryState" class="form-control" th:value="queryState" th:if="${stateList != null}">
+                                                    <option value="">---全部---</option>
+                                                    <option th:each="dataDictionary:${stateList}" th:selected="${queryState eq dataDictionary.valueId}"
+                                                            th:value="${dataDictionary.valueId}" th:text="${dataDictionary.valueName}"></option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </li>
+
+                                    <li>
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12">一级分类</label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                <select id="queryOneCategoryId" name="oneCategoryId" th:value="oneCategoryId" class="form-control">
+                                                        <span th:if="${oneCategoryList != null}">
+                                                            <option value="">---全部---</option>
+                                                            <option th:each="goodsCategory:${oneCategoryList}" th:selected="${oneCategoryId eq goodsCategory.id}"
+                                                                    th:value="${goodsCategory.id}" th:text="${goodsCategory.categoryName}"></option>
+                                                        </span>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </li>
+
+                                    <li>
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12">二级分类</label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                <input type="hidden" name="twoCategoryList" id="twoCategoryList"/>
+                                                <select name="twoCategoryId" id="queryTwoCategoryId" th:value="twoCategoryId" class="form-control">
+                                                        <span th:if="${twoCategoryList != null}">
+                                                            <option value="">---全部---</option>
+                                                            <option th:each="goodsCategory:${twoCategoryList}" th:selected="${twoCategoryId eq goodsCategory.id}"
+                                                                    th:value="${goodsCategory.id}" th:text="${goodsCategory.categoryName}"></option>
+                                                        </span>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <button type="submit" class="btn btn-primary"> 查 &nbsp;&nbsp;&nbsp;&nbsp;询 </button>
+                                    </li>
+                                </ul>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12 col-sm-12 col-xs-12" style="margin-left: 10px;border-radius: 3px;border: 0.8px solid #b3b3b3;margin-bottom: 15px;">
+                <div class="x_panel">
+                    <div class="x_content">
+                        <p class="text-muted font-13 m-b-30"></p>
+                        <div id="datatable-responsive_wrapper"
+                             class="dataTables_wrapper form-inline dt-bootstrap no-footer">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <a th:href="@{/system/goods/goodsAdd}" class="btn btn-success btn-sm">添加商品</a><br>
+                                    <table id="datatable-responsive" class="table table-striped table-bordered dt-responsive nowrap dataTable no-footer dtr-inline collapsed"
+                                           cellspacing="0" width="100%" role="grid" aria-describedby="datatable-responsive_info" style="width: 100%;">
+                                        <thead>
+                                        <tr role="row" style="text-align: center">
+                                            <th class="sorting_asc" tabindex="0"
+                                                aria-controls="datatable-responsive" rowspan="1" colspan="1"
+                                                aria-label="First name: activate to sort column descending"
+                                                aria-sort="ascending" style="text-align: center">编号</th>
+                                            <th class="sorting_asc" tabindex="0" style="text-align: center"
+                                                aria-controls="datatable-responsive" rowspan="1" colspan="1"
+                                                aria-label="First name: activate to sort column descending">
+                                                商品图片</th>
+                                            <th class="sorting_asc" tabindex="0" style="text-align: center"
+                                                aria-controls="datatable-responsive" rowspan="1" colspan="1"
+                                                aria-label="First name: activate to sort column descending">
+                                                商品名称</th>
+                                            <th class="sorting_asc" tabindex="0" style="text-align: center"
+                                                aria-controls="datatable-responsive" rowspan="1" colspan="1"
+                                                aria-label="First name: activate to sort column descending">
+                                                商品货号</th>
+                                            <th class="sorting_asc" tabindex="0" style="text-align: center"
+                                                aria-controls="datatable-responsive" rowspan="1" colspan="1"
+                                                aria-label="First name: activate to sort column descending">
+                                                所属分类(一级分类、二级分类)</th>
+                                            <th class="sorting_asc" tabindex="0" style="text-align: center"
+                                                aria-controls="datatable-responsive" rowspan="1" colspan="1"
+                                                aria-label="First name: activate to sort column descending">
+                                                上架状态</th>
+                                            <th class="sorting_asc" tabindex="0" style="text-align: center"
+                                                aria-controls="datatable-responsive" rowspan="1" colspan="1"
+                                                aria-label="First name: activate to sort column descending">
+                                                销量</th>
+                                            <th class="sorting_asc" tabindex="0" style="text-align: center"
+                                                aria-controls="datatable-responsive" rowspan="1" colspan="1"
+                                                aria-label="First name: activate to sort column descending">
+                                                库存</th>
+                                            <th class="sorting_asc" tabindex="0"
+                                                aria-controls="datatable-responsive" rowspan="1" colspan="1"
+                                                style="width: 124px;text-align: center" aria-label="Last name: activate to sort column descending">
+                                                操作</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr style="text-align: center" role="row" class="odd" th:each="goods:${goodsList}">
+                                            <td tabindex="0" class="sorting_1" th:text="${goods.id}"></td>
+                                            <td><img th:src="@{'http://localhost'+${goods.logoPicPath}}" th:width="160px" th:height="160px"></td>
+                                            <td th:text="${goods.goodsName}"></td>
+                                            <td th:text="${goods.goodsCore}"></td>
+                                            <td>[[${goods.oneCategoryName}]] -> [[${goods.twoCategoryName}]]</td>
+                                            <td th:text="${goods.stateName}" th:style="${goods.state ==1 ? 'color: #00B83F' : 'color: #ac2925'}"></td>
+                                            <td th:text="${goods.sale}"></td>
+                                            <td th:text="${goods.stock}"></td>
+                                            <td>
+                                                <div class="btn-group">
+                                                    <button type="button" class="btn btn-danger">点击操作</button>
+                                                    <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                                        <span class="caret"></span>
+                                                        <span class="sr-only">Toggle Dropdown</span>
+                                                    </button>
+                                                    <ul class="dropdown-menu" role="menu">
+                                                        <li th:switch="${goods.state}">
+                                                            <a  class="onSale" th:case="2" th:attr="goodsId=${goods.id},state=${goods.state},goodsName=${goods.goodsName}" data-toggle="tooltip" data-placement="top" title="" data-original-title="您可以点击上架发布您的商品">上架</a>
+                                                            <a  class="onSale" th:case="1" th:attr="goodsId=${goods.id},state=${goods.state},goodsName=${goods.goodsName}" data-toggle="tooltip" data-placement="top" title="" data-original-title="您可以点击下架来下架您的商品">下架</a>
+                                                            <a  class="onSale" th:case="3" th:attr="goodsId=${goods.id},state=${goods.state},goodsName=${goods.goodsName}" data-toggle="tooltip" data-placement="top" title="" data-original-title="您可以点击上架来下架您的商品">上架</a>
+                                                        </li>
+                                                        <li><a  class="modifyGoods" th:attr="goodsId=${goods.id},state=${goods.state},stateName=${goods.stateName}"
+                                                                data-toggle="tooltip" data-placement="top" title="" data-original-title="修改商品基础信息">修改</a></li>
+                                                        <li><a  class="viewGoods" th:attr="goodsId=${goods.id}" data-toggle="tooltip" data-placement="top" title="" data-original-title="查看商品基础信息">查看</a></li>
+                                                        <li><a  class="deleteGoods" data-toggle="tooltip" data-placement="top" title="" data-original-title="删除商品"
+                                                                th:attr="goodsId=${goods.id},state=${goods.state},stateName=${goods.stateName},goodsName=${goods.goodsName}">删除</a></li>
+                                                    </ul>
+                                                </div>
+                                                <div>
+                                                    <button th:attr="stock=${goods.stock},goodsId=${goods.id}" data-toggle="modal"
+                                                            data-target="#myModal" class="btn btn-success modifyStock">调整库存</button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <!--分页-->
+                            <div class="row">
+                                <div class="col-sm-5">
+                                    <div class="dataTables_info" id="datatable-responsive_info"
+                                         role="status" aria-live="polite">共[[${pages.totalCount}]]条记录
+                                        [[${pages.currentPageNo }]]/[[${pages.totalPageCount }]]页</div>
+                                </div>
+                                <div class="col-sm-7">
+                                    <div class="dataTables_paginate paging_simple_numbers"
+                                         id="datatable-responsive_paginate">
+                                        <ul class="pagination">
+                                            <li class="paginate_button previous" th:if="${pages.currentPageNo > 1} "><a
+                                                    href="javascript:page_nav(document.forms[0],1);"
+                                                    aria-controls="datatable-responsive" data-dt-idx="0"
+                                                    tabindex="0">首页</a>
+                                            </li>
+                                            <li class="paginate_button " th:if="${pages.currentPageNo > 1}"><a
+                                                    class="previousPage" th:attr="currentPageNo = ${pages.currentPageNo - 1}"
+                                                    aria-controls="datatable-responsive" data-dt-idx="1"
+                                                    tabindex="0">上一页</a>
+                                            </li>
+                                            <li class="paginate_button " th:if="${pages.currentPageNo < pages.totalPageCount}"><a
+                                                    class="nextPage" th:attr="currentPageNo = ${pages.currentPageNo + 1}"
+                                                    aria-controls="datatable-responsive" data-dt-idx="1"
+                                                    tabindex="0">下一页</a>
+                                            </li>
+                                            <li class="paginate_button next" th:if="${pages.currentPageNo< pages.totalPageCount}"><a
+                                                    class="lastPage" th:attr="currentPageNo = ${pages.totalPageCount}"
+                                                    aria-controls="datatable-responsive" data-dt-idx="7"
+                                                    tabindex="0">最后一页</a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div th:replace="common::rightFooter"></div>
+    </div>
+</div>
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"
+                        aria-hidden="true">×
+                </button>
+                <h4 class="modal-title" id="myModalLabel">
+                    修改库存
+                </h4>
+            </div>
+            <form th:action="@{/system/goods/modifyStock}" class="newAddressForm">
+                <div class="modal-body">
+                    <label>
+                        <input type="hidden" id="goodsId" name="goodsId">
+                        <input type="number" data-validate-minmax="1,500" id="stock" name="stock"/>
+                    </label>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default"
+                            data-dismiss="modal">关闭
+                    </button>
+                    <button type="submit" class="btn btn-primary">
+                        修改
+                    </button>
+                </div>
+            </form>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>
+<div th:include="common::footer"></div>
+<script th:src="@{/mallStatic/js/rollpage.js}" type="text/javascript"></script>
+<script th:src="@{/mallStatic/js/system/goodslist.js}"></script>
+</body>
+</html>
