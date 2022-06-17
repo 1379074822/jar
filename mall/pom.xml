@@ -58,7 +58,7 @@
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>fastjson</artifactId>
-            <version>1.2.31</version>
+            <version>1.2.83</version>
         </dependency>
 
         <!--spring boot aop 方法请求参数日志打印依赖-->
@@ -95,7 +95,7 @@
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>fastjson</artifactId>
-            <version>1.2.31</version>
+            <version>1.2.83</version>
         </dependency>
         <!--commons -->
         <dependency>
